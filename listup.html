@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Witch|ベストアンサーをみつける魔法</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	
+	<body>
+		<section>
+			<h2 class="sec__ttl">あなたのお悩みは？</h2>
+			<textarea></textarea>
+		</section>
+		<section>
+			<h2>どんな「選択肢」が挙げられますか？<h2>
+			<h3><span>4つまで</span>リストアップできます</h3>
+			<!--input追加エリア-->
+			<div class="input__container">
+				<table>
+					<tbody id="input__table--cand">
+						<tr>
+							<td><input type="text" name="cand"></td>
+							<td><button class="remove">-</button></td>
+						</tr>
+						<tr>
+							<td><input type="text" name="cand"></td>
+							<td><button class="remove">-</button></td>
+						</tr>
+					</tbody>
+				</table>
+				<a href="javascript:void(0)" id="add-tr__cand">+ 追加</a>
+			</div>
+		</section>
+		<section>
+			<h2>あなたの「評価ポイント」は？</h2>
+			<h3><span>4つまで</span>リストアップできます</h3>
+			<!--input追加エリア-->
+			<div class="input__container">
+				<table>
+					<tbody id="input__table--std">
+						<tr>
+							<td><input type="text" name="std"></td>
+							<td><button class="remove">-</button></td>
+						</tr>
+						<tr>
+							<td><input type="text" name="std"></td>
+							<td><button class="remove">-</button></td>
+						</tr>
+					</tbody>
+				</table>
+				<a href="javascript:void(0)" id="add-tr__std">+ 追加</a>
+				<a href="javascript:void(0)" id="get-values">次へすすむ</a>
+			</div>
+		</section>
+		
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script>
+			$(function(){
+				//inputを追加
+				$('#add-tr__cand').click(function(){
+					var html = `<tr>
+												<td>
+													<input type="text" name="cand">
+												</td>
+												<td>
+													<button class="remove">-</button>
+												</td>
+											</tr>`;
+					
+					var len = $('#input__table--cand > tr').length;
+					if(len < 4){
+						$('#input__table--cand').append(html);
+					}
+				});
+				$('#add-tr__std').click(function(){
+					var html = `<tr>
+												<td>
+													<input type="text" name="std">
+												</td>
+												<td>
+													<button class="remove">-</button>
+												</td>
+											</tr>`;
+					
+					var len = $('#input__table--std > tr').length;
+					if(len < 4){
+						$('#input__table--std').append(html);
+					}
+				});
+				
+				//inputを削除
+				$(document).on('click', '.remove', function(){
+					var len1 = $('#input__table--cand > tr').length;
+					var len2 = $('#input__table--std > tr').length;
+					if(len1 > 2){
+						$(this).parents('tr').remove();
+					}else if(len2 > 2){
+						$(this).parents('tr').remove();
+					}
+				});
+				
+				
+				var cands;
+				var stds;
+				$('#get-values').click(function(){
+					var can_go = true;
+					var trouble;
+					trouble = $('textarea').val();
+					
+					cands = [];
+					$('input[name="cand"]').each(function(i, elem){
+						if($(elem).val() != ''){
+							cands.push($(elem).val());
+						}else{
+							alert('空欄があります');
+							can_go = false;
+						}
+					});
+					
+					stds = [];
+					$('input[name="std"]').each(function(index, elem){
+						if($(elem).val() != ''){
+							stds.push($(elem).val());
+						}else{
+							alert('空欄があります');
+							can_go = false;
+						}
+					});
+					
+					if(can_go == true){
+						location.href = "eval.html?trouble="+encodeURIComponent(trouble)+"&cands="+encodeURIComponent(cands)+"&stds="+encodeURIComponent(stds);
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

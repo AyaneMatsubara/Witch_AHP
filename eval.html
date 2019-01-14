@@ -5,56 +5,32 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
 		<link rel="stylesheet" href="css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
+		<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 	</head>
 
 	<body>
 		<section id="stds">
-			<h2>まずは「評価ポイント」どうしを評価します</h2>
-			<h3>より重要だと思うほうに動かしましょう</h3>
+			<div class="sec__icon"><i class="far fa-question-circle"></i></div>
+			<h2 class="sec__ttl">まずは「評価のポイント」<br>の重要度を評価します</h2>
+			<div class="guide">
+				<i class="fas fa-check-circle"></i>
+				<p class="guide__txt">より重要だと思うほうへ<br>スライドバーを動かしましょう</p>
+			</div>
 			<div class="slider__container" id="stds-slider-wrapper"></div>
 		</section>
 		<section id="cands">
-			<h2>では、「評価ポイント」ごとに「選択肢」を評価してみましょう</h2><h3>より優れていると思うほうに動かしましょう</h3>
+			<div class="sec__icon"><i class="far fa-question-circle"></i></div>
+			<h2 class="sec__ttl">「評価のポイント」ごとに<br>候補を評価していきます</h2>
+			<div class="guide">
+				<i class="fas fa-check-circle"></i>
+				<p class="guide__txt">より重要だと思うほうへ<br>スライドバーを動かしましょう</p>
+			</div>
 			<div class="slider__container" id="cands-slider-wrapper"></div>
-		</section>
-		<a href="javascript:void(0)" id="get-values">結果をみる！</a>
-		
-		<section class="result" style="display: none; height: 100vh; width: 100vw; z-index: 100; position: absolute; top: 0; background: #CFF9FF;">
-			<h2>結果発表</h2>
-			<div>
-				<h3>ベストアンサーは・・・</h3>
-				<p class="best-answer"></p>
-			</div>
-			<div>
-				<p>あなたのお悩み</p>
-				<p id="trouble"></p>
-				<p>の解決策は <span class="best-answer"></span> でしょう！</p>
-			</div>
-			<div>
-				<p>よい選択肢ランキング</p>
-				<table>
-					<tbody id="cand-ranking">
-						<tr><td>1.</td><td class="cand-answer"></td></tr>
-						<tr><td>2.</td><td class="cand-answer"></td></tr>
-					</tbody>
-				</table>
-			</div>
-			<div>
-				<p>あなたが重視したものランキング</p>
-				<table>
-					<tbody id="std-ranking">
-						<tr><td>1.</td><td class="std-answer"></td></tr>
-						<tr><td>2.</td><td class="std-answer"></td></tr>
-					</tbody>
-				</table>
-			</div>
-			<div>
-				<a href="javascript:void(0)" id="retry">もう一度評価しなおす</a><br>
-				<a href="listup.html">トップへ</a>
-			</div>
+			<a href="javascript:void(0)" id="get-values" class="btn--bg">結果をみる！<i class="fas fa-caret-right"></i></a>
 		</section>
 	</body>
-	
+
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script>
 		$(function(){
@@ -64,14 +40,14 @@
 				var tmp = item.split('=');
 				params[tmp[0]] = decodeURIComponent(tmp[1]).split(',');
 			});
-			
+
 			//受け取ったパラメータを配列に
 			var cands = params['cands'];
 			var stds = params['stds'];
 			var trouble = params['trouble'];
-			
+
 			$("#trouble").text(trouble);
-			
+
 			//配列の初期化
 			var std_points = [];
 			for(let i=0; i < stds.length; i++){
@@ -90,13 +66,13 @@
 					}
 				}
 			}
-			
+
 			//スライドバーの作成
 			for(let i=0; i < stds.length; i++){
 				for(let j=i ;j < stds.length; j++){
 					if(stds[i] != stds[j]){
-						var html = `<span>`+stds[i]+`</span><span>`+stds[j]+`</span>
-												<input type="range" class="input-range" value="5" min="1" max="9" data-left="`+i+`" data-right="`+j+`">
+						var html = `<span class="slider__txt--l">${stds[i]}</span><span class="slider__txt--r">${stds[j]}</span>
+												<input type="range" class="input-range" value="5" min="1" max="9" data-left="${i}" data-right="${j}">
 												<span class="value"></span>`;
 						$('#stds-slider-wrapper').append(html);
 					}
@@ -105,16 +81,16 @@
 			$('#stds-slider-wrapper > input').on('change', function(){
 				getPoints(std_points, stds, this);
 			});
-			
+
 			stds.forEach(function(item, index){
-				var html = '<ul id="cands-box-'+index+'"><p>'+item+'</p></ul>';
+				var html = '<ul id="cands-box-'+index+'"><p class="cands-box__ttl">'+item+'</p></ul>';
 				$('#cands-slider-wrapper').append(html);
 				for(let i=0; i < cands.length; i++){
 					for(let j=i; j < cands.length; j++){
 						if(cands[i] != cands[j]){
 							var html = `<li>
-														<span>`+cands[i]+`</span><span>`+cands[j]+`</span>
-														<input type="range" class="input-range" value="5" min="1" max="9" data-left="`+i+`" data-right="`+j+`" data-idx="`+index+`">
+														<span class="slider__txt--l">${cands[i]}</span><span class="slider__txt--r">${cands[j]}</span>
+														<input type="range" class="input-range" value="5" min="1" max="9" data-left="${i}" data-right="${j}" data-idx="${index}">
 														<span class="value"></span>
 													</li>`;
 							$('#cands-box-'+index+'').append(html);
@@ -123,10 +99,10 @@
 				}
 			});
 			$('#cands-slider-wrapper > ul > li > input').on('change', function(){
-				var idx = $(this).data('idx');			
+				var idx = $(this).data('idx');
 				getPoints(cand_points[idx], cands, this);
 			});
-			
+
 			//結果集計
 			$('#get-values').on('click', function(){
 				// 変数の初期化
@@ -140,25 +116,25 @@
 					};
 				}
 			  var cand_results = []; // *（評価基準lについての基準化重要度の配列）の配列(l個)
-				
+
 				// 評価ポイントの重みの幾何平均とその総和
 				let sum_std_results = 0;
 				for(let i=0; i < stds.length; i++){
 					std_results.push(geomean(std_points[i]));
 					sum_std_results += std_results[i];
 				}
-				
+
 				// 評価ポイント幾何平均の正規化
 				for(let i=0; i < stds.length; i++){
 					normalized_std_results[i].point += (std_results[i] / sum_std_results);
 				}
-				
+
 				for(let l=0;l<cand_points.length;l++){
 					let cand_table = cand_points[l]; // 各評価点についての案の表
-					
+
 					let cand_table_results = []; // 評価基準lについての表の幾何平均
 					let normalized_cand_table_results = []; // 評価基準lについての表の基準化重要度
-					
+
 					// 評価ポイントの重みの幾何平均とその総和
 					let sum_cand_table_results = 0;
 					for(let y=0; y < cand_table.length;y++){
@@ -172,7 +148,7 @@
 					}
 					cand_results.push(normalized_cand_table_results);
 				}
-				
+
 				let total_points = [] // 各選択肢の総合得点
 				for(let k=0;k<cands.length;k++){
 					total_points[k] = {
@@ -181,47 +157,38 @@
 						point: 0
 					};
 				}
-				
+
 				for(let i=0;i<stds.length;i++){ // i番目の評価基準
 					let rate = normalized_std_results[i].point;
 					for(let k=0;k<cands.length;k++){ // k番目の選択肢
 						total_points[k].point += rate * cand_results[i][k]
 					}
 				}
-				
+
 				total_points.sort(function(a,b){
 					if(a.point < b.point) return 1;
 					if(a.point > b.point) return -1;
 					return 0;
 				})
-								
-				$(".result").stop().fadeIn();
-				
-				var best_answer = total_points[0].cand;
-				$('.best-answer').text(best_answer);
-				
-				for(let i=0; i < cands.length - 2; i++){
-					var html = "<tr><td>"+(i+3)+".</td><td class='cand-answer'></td></tr>";
-					$("#cand-ranking").append(html);
+
+				let ans_cands = [];
+				let ans_cands_pt = [];
+				for(let i=0;i<cands.length;i++){
+					ans_cands[i] = total_points[i].cand;
+					ans_cands_pt[i] = total_points[i].point;
 				}
-				$(".cand-answer").each(function(index){
-					$(this).text(total_points[index].cand);
-				});
-				
-				for(let j=0; j < stds.length - 2; j++){
-					var html = "<tr><td>"+(i+3)+".</td><td class='std-answer'></td></tr>";
-					$("#std-ranking").append(html);
+
+				let ans_stds = [];
+				let ans_stds_pt = [];
+				for(let j=0;j<stds.length;j++){
+					ans_stds[j] = normalized_std_results[j].std;
+					ans_stds_pt[j] = normalized_std_results[j].point;
 				}
-				$(".std-answer").each(function(index){
-					$(this).text(normalized_std_results[index].std);
-				});
-				
-				$("#retry").on("click", function(){
-					$(".result").stop().fadeOut();
-				})
-				
+
+				location.href = "result.html?trouble="+encodeURIComponent(trouble)+"&ans_cands="+encodeURIComponent(ans_cands)+"&ans_cands_pt="+encodeURIComponent(ans_cands_pt)+"&ans_stds="+encodeURIComponent(ans_stds)+"&ans_stds_pt="+encodeURIComponent(ans_stds_pt);
+
 			});
-			
+
 			//関数定義
 			//得点割り振りの関数
 			function getPoints(point_list, items, obj){
@@ -249,7 +216,7 @@
 				var result = num**(1/len);
 				return result;
 			}
-			
+
 			//スライドバーから得点を取得
 			/*$('.input-range').each(function(){
 				$(this).on('load input', function(){
@@ -257,7 +224,7 @@
 					$(this).next('span').text(point);
 				});
 			});*/
-			
+
 		});
 	</script>
 </html>

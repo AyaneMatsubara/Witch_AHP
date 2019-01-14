@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Witch|ベストアンサーをみつける魔法</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+		<link rel="stylesheet" href="css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
+		<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+	</head>
+
+  <body>
+    <section class="result">
+      <h2>結果発表</h2>
+      <div>
+        <p class="sec__ttl">ベストアンサーは…</p>
+        <p class="best-answer"></p>
+				<p class="sec__ttl">です！</p>
+      </div>
+      <div>
+				<div class="sec__icon"><i class="fas fa-tired"></i></div>
+        <p class="sec__ttl">あなたのお悩み</p>
+        <p id="trouble"></p>
+      </div>
+      <div>
+				<div class="sec__icon"><i class="fas fa-heart"></i></div>
+        <p class="sec__ttl">ランキング</p>
+				<div><canvas id="myChart_cand"></cansvas></div>
+        <table>
+          <tbody id="cand-ranking">
+            <tr><td>1</td><td class="cand-answer"></td></tr>
+            <tr><td>2</td><td class="cand-answer"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+				<div class="sec__icon"><i class="fas fa-heart"></i></div>
+        <p class="sec__ttl">あなたが重視したもの</p>
+				<div><canvas id="myChart_std"></cansvas></div>
+        <table>
+          <tbody id="std-ranking">
+            <tr><td>1</td><td class="std-answer"></td></tr>
+            <tr><td>2</td><td class="std-answer"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <a href="listup.html" class="btn--bg">もう一度</a>
+      </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <script>
+      $(function(){
+        //パラメータ受け取りとデコード
+  			window.params = {}
+  			location.search.substr(1).split('&').forEach(function(item){
+  				var tmp = item.split('=');
+  				params[tmp[0]] = decodeURIComponent(tmp[1]).split(',');
+  			});
+
+  			//受け取ったパラメータを配列に
+  			var ans_cands = params['ans_cands'];
+        var ans_cands_pt = params['ans_cands_pt'];
+  			var ans_stds = params['ans_stds'];
+        var ans_stds_pt = params['ans_stds_pt'];
+  			var trouble = params['trouble'];
+
+        var best_answer = ans_cands[0];
+        $('.best-answer').text(best_answer);
+
+        for(let i=0; i < ans_cands.length - 2; i++){
+          let html = `<tr>
+                        <td>${i+3}</td>
+                        <td class='cand-answer'></td>
+                      </tr>`;
+          $("#cand-ranking").append(html);
+        }
+        $(".cand-answer").each(function(index){
+          $(this).text(ans_cands[index]);
+        });
+
+        for(let j=0; j < ans_stds.length - 2; j++){
+          let html = `<tr>
+                        <td>${j+3}</td>
+                        <td class='std-answer'></td>
+                      </tr>`;
+          $("#std-ranking").append(html);
+        }
+        $(".std-answer").each(function(index){
+          $(this).text(ans_stds[index]);
+        });
+
+				$("#trouble").text(trouble);
+
+				var ctx = document.getElementById("myChart_std");
+				var myChart_std = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+	    				datasets: [{
+	        			data: ans_stds_pt,
+								backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
+	    			}],
+	    			labels: ans_stds
+					},
+					options: {
+					}
+				});
+
+				var ctx = document.getElementById("myChart_cand");
+				var myChart_cand = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+	    				datasets: [{
+	        			data: ans_cands_pt,
+								backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
+	    			}],
+	    			labels: ans_cands
+					},
+					options: {
+					}
+				});
+
+      });
+    </script>
+  </body>
+</html>

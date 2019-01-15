@@ -56,6 +56,7 @@ ul {
 .top {
 	margin: calc((100vh - 530px) /2) auto;
 	&__txt {
+		@include txt;
 		font-size: 20px;
 		margin: 5px 0;
 	}

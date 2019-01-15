@@ -118,21 +118,21 @@
 					cands = [];
 					$('input[name="cand"]').each(function(i, elem){
 						if($(elem).val() != ''){
-							cands.push($(elem).val());
-						}else{
-							alert('空欄があります');
-							can_go = false;
-						}
+			      	cands.push($(elem).val());
+			      }else if(can_go == true){
+			      	alert('空欄があります');
+			      	can_go = false;
+			      }
 					});
 
 					stds = [];
 					$('input[name="std"]').each(function(index, elem){
 						if($(elem).val() != ''){
-							stds.push($(elem).val());
-						}else{
-							alert('空欄があります');
-							can_go = false;
-						}
+			      	stds.push($(elem).val());
+			      }else if(can_go == true){
+			      	alert('空欄があります');
+			      	can_go = false;
+			      }
 					});
 
 					if(can_go == true){

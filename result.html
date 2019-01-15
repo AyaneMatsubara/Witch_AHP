@@ -25,7 +25,7 @@
       <div>
 				<div class="sec__icon"><i class="fas fa-heart"></i></div>
         <p class="sec__ttl">ランキング</p>
-				<div><canvas id="myChart_cand"></cansvas></div>
+				<div id="chart-box-1"><canvas id="myChart_cand"></cansvas></div>
         <table>
           <tbody id="cand-ranking">
             <tr><td>1</td><td class="cand-answer"></td></tr>
@@ -36,7 +36,7 @@
       <div>
 				<div class="sec__icon"><i class="fas fa-heart"></i></div>
         <p class="sec__ttl">あなたが重視したもの</p>
-				<div><canvas id="myChart_std"></cansvas></div>
+				<div id="chart-box-2"><canvas id="myChart_std"></cansvas></div>
         <table>
           <tbody id="std-ranking">
             <tr><td>1</td><td class="std-answer"></td></tr>
@@ -46,6 +46,7 @@
       </div>
       <div>
         <a href="listup.html" class="btn--bg">もう一度</a>
+				<a href="top.html" class="btn--add">トップへ戻る</a>
       </div>
     </section>
 
@@ -94,31 +95,46 @@
 
 				$("#trouble").text(trouble);
 
-				var ctx = document.getElementById("myChart_std");
-				var myChart_std = new Chart(ctx, {
-						type: 'doughnut',
-						data: {
-	    				datasets: [{
-	        			data: ans_stds_pt,
-								backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
-	    			}],
-	    			labels: ans_stds
-					},
-					options: {
-					}
-				});
+				var show_chart_cand = false;
+				var show_chart_std = false;
 
-				var ctx = document.getElementById("myChart_cand");
-				var myChart_cand = new Chart(ctx, {
-						type: 'doughnut',
-						data: {
-	    				datasets: [{
-	        			data: ans_cands_pt,
-								backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
-	    			}],
-	    			labels: ans_cands
-					},
-					options: {
+				$(window).on("load scroll", function(){
+					var w_bottom = $(window).scrollTop() + $(window).height() - 200;
+					var chart_cand_h = $("#chart-box-1").offset().top;
+					var chart_std_h = $("#chart-box-2").offset().top;
+					if(chart_cand_h < w_bottom && show_chart_cand == false){
+						// チャートのアニメーションを実行
+							var ctx = document.getElementById("myChart_cand");
+							var myChart_cand = new Chart(ctx, {
+									type: 'doughnut',
+									data: {
+				    				datasets: [{
+				        			data: ans_cands_pt,
+											backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
+				    			}],
+				    			labels: ans_cands
+								},
+								options: {
+								}
+							});
+							show_chart_cand = true;
+					}
+					if(chart_std_h < w_bottom && show_chart_std == false){
+						// チャートのアニメーションを実行
+							var ctx = document.getElementById("myChart_std");
+							var myChart_std = new Chart(ctx, {
+									type: 'doughnut',
+									data: {
+										datasets: [{
+											data: ans_stds_pt,
+											backgroundColor: ['#FF6EA0', '#F899BA', '#FAC7EC', '#fff']
+									}],
+									labels: ans_stds
+								},
+								options: {
+								}
+							});
+							show_chart_std = true;
 					}
 				});
 

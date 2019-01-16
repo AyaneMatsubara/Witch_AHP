@@ -33,14 +33,6 @@ tr {
 	line-height: 2.5;
   width: 100%;
 }
-textarea {
-	min-height: 3em;
-  width: 100%;
-  font-size: 18px;
-  border-radius: 3px;
-  border: none;
-  resize: none;
-}
 li {
   list-style: none;
 }
@@ -51,6 +43,16 @@ ul {
 @mixin txt {
 	font-family: 'Noto Sans JP', sans-serif;
 	font-weight: 100;
+}
+
+textarea {
+	@include txt;
+	min-height: 3em;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 3px;
+  border: none;
+  resize: none;
 }
 
 .top {
@@ -208,6 +210,7 @@ ul {
 }
 
 .slider__txt {
+	@include txt;
   max-width: 120px;
   word-wrap: break-word;
   display: inline-block;
@@ -225,6 +228,7 @@ ul {
   }
 }
 .cands-box__ttl {
+	@include txt;
   border-radius: 3px;
   background: #7079EB;
   font-size: 20px;
@@ -263,6 +267,7 @@ tbody[id$="ranking"] {
   }
 }
 tbody[id$="ranking"] td:nth-child(2n+1) {
+	@include txt;
   background: linear-gradient(330deg, #F5576C, #FF8BE0);
   border-radius: 50%;
   width: 40px;
@@ -270,7 +275,11 @@ tbody[id$="ranking"] td:nth-child(2n+1) {
   margin: 0 20px 0 0;
 }
 .cand-answer, .std-answer{
+	@include txt;
   width: 100%;
   text-align: left;
   border-bottom: #fff solid 1px;
+}
+.result {
+	@include txt;
 }
